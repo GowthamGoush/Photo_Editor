@@ -1,10 +1,13 @@
 package com.example.photoeditor;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
@@ -27,16 +30,22 @@ import java.util.TreeSet;
 
 public class MainActivity extends AppCompatActivity {
 
-   private GridView imageGallery;
+    private GridView imageGallery;
     private ArrayList<String> images;
+    private int REQUEST_PERMISSIONS = 2131;
+    private String[] PERMISSIONS = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
 
+    private int PERMISSIONS_COUNTS = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-       imageGallery = findViewById(R.id.imageGallery);
+        imageGallery = findViewById(R.id.imageGallery);
 
         imageGallery.setAdapter(new ImageAdapter(this));
 
@@ -46,9 +55,9 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> arg0, View arg1,
                                     int position, long arg3) {
 
-                if (null != images && !images.isEmpty()){
-                    Intent intent = new Intent(MainActivity.this,MainActivity2.class);
-                    intent.putExtra("path",images.get(position));
+                if (null != images && !images.isEmpty()) {
+                    Intent intent = new Intent(MainActivity.this, MainActivity2.class);
+                    intent.putExtra("path", images.get(position));
                     startActivity(intent);
                     Toast.makeText(
                             getApplicationContext(),
@@ -111,8 +120,8 @@ public class MainActivity extends AppCompatActivity {
             String absolutePathOfImage = null;
             uri = android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
 
-            String[] projection = { MediaStore.MediaColumns.DATA,
-                    MediaStore.Images.Media.BUCKET_DISPLAY_NAME };
+            String[] projection = {MediaStore.MediaColumns.DATA,
+                    MediaStore.Images.Media.BUCKET_DISPLAY_NAME};
 
             cursor = activity.getContentResolver().query(uri, projection, null,
                     null, null);
@@ -129,5 +138,34 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private  boolean notPermissions(){
+        for (int i=0;i<PERMISSIONS_COUNTS;i++){
+            if(checkSelfPermission(PERMISSIONS[i]) != PackageManager.PERMISSION_GRANTED){
+                return true;
+            }
+        }
 
+        return false;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (notPermissions()){
+            requestPermissions(PERMISSIONS,REQUEST_PERMISSIONS);
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode == REQUEST_PERMISSIONS && grantResults.length >0){
+            if(notPermissions()){
+                finishAffinity();
+            }
+        }
+    }
 }
