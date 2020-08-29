@@ -4,35 +4,80 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity2">
+    tools:context=".MainActivity2"
+    android:background="#03A9F4">
 
     <ImageView
         android:id="@+id/imageCrop"
         android:layout_width="400dp"
         android:layout_height="500dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="60dp"
         android:layout_centerHorizontal="true"
         />
 
-    <Button
+    <ImageButton
         android:id="@+id/colorBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Color"
         android:padding="12dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="20dp"
+        android:layout_marginEnd="10dp"
+        android:layout_toStartOf="@+id/SaveBtn"
+        android:src="@drawable/ic_filter"
+        android:background="@drawable/rounded_btn"
         />
 
-    <Button
+    <ImageButton
         android:id="@+id/SaveBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Save"
+        android:layout_marginBottom="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="10dp"
+        android:layout_toStartOf="@+id/insertBtn"
+        android:background="@drawable/rounded_btn"
+        android:padding="12dp"
+        android:src="@drawable/ic_save"
+        android:text="Save" />
+
+    <ImageButton
+        android:id="@+id/RotateBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="20dp"
+        android:layout_toEndOf="@+id/insertBtn"
+        android:background="@drawable/rounded_btn"
+        android:padding="12dp"
+        android:src="@drawable/ic_rotate"
+        android:text="Rotate" />
+
+    <ImageButton
+        android:id="@+id/BlurBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Blur"
         android:padding="12dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginLeft="100dp"
+        android:layout_marginStart="10dp"
         android:layout_marginBottom="20dp"
+        android:layout_toEndOf="@+id/RotateBtn"
+        android:src="@drawable/ic_blur"
+        android:background="@drawable/rounded_btn"
+        />
+
+    <ImageButton
+        android:id="@+id/insertBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="20dp"
+        android:src="@drawable/ic_insert"
+        android:background="@drawable/rounded_btn"
         />
 
 </RelativeLayout>
