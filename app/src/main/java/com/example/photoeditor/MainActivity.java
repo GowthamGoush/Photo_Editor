@@ -4,6 +4,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
@@ -44,12 +45,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1,
                                     int position, long arg3) {
-                if (null != images && !images.isEmpty())
+
+                if (null != images && !images.isEmpty()){
+                    Intent intent = new Intent(MainActivity.this,MainActivity2.class);
+                    intent.putExtra("path",images.get(position));
+                    startActivity(intent);
                     Toast.makeText(
                             getApplicationContext(),
                             "position " + position + " " + images.get(position),
                             Toast.LENGTH_SHORT).show();
-                ;
+                }
 
             }
         });
@@ -59,15 +64,8 @@ public class MainActivity extends AppCompatActivity {
 
     private class ImageAdapter extends BaseAdapter {
 
-        /** The context. */
         private Activity context;
 
-        /**
-         * Instantiates a new image adapter.
-         *
-         * @param localContext
-         *            the local context
-         */
         public ImageAdapter(Activity localContext) {
             context = localContext;
             images = getAllShownImagesPath(context);
@@ -105,13 +103,6 @@ public class MainActivity extends AppCompatActivity {
             return picturesView;
         }
 
-        /**
-         * Getting All Images Path.
-         *
-         * @param activity
-         *            the activity
-         * @return ArrayList with images Path
-         */
         private ArrayList<String> getAllShownImagesPath(Activity activity) {
             Uri uri;
             Cursor cursor;
